@@ -1,7 +1,7 @@
 from setuptools import setup
 import re
 
-owlinit = open('fitbit/__init__.py').read()
+owlinit = open('owlenergy/__init__.py').read()
 author = re.search("__author__ = '([^']+)'", owlinit).group(1)
 author_email = re.search("__author_email__ = '([^']+)'", owlinit).group(1)
 version = re.search("__version__ = '([^']+)'", owlinit).group(1)
