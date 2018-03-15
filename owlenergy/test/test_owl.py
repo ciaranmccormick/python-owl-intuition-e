@@ -95,8 +95,7 @@ class OWLEnergyReadingTestCase(unittest.TestCase):
         Returns:
             None
         """
-        energy_reading_0 = OWLEnergyReading()
-        energy_reading_0.process_xml(self.test_data)
+        energy_reading_0 = OWLEnergyReading.from_string(self.test_data)
         self.assertEqual(energy_reading_0.channel, 0)
         self.assertEqual(energy_reading_0.owl_id, '4437190077C6')
         self.assertEqual(energy_reading_0.current, 2431.00)
@@ -108,8 +107,7 @@ class OWLEnergyReadingTestCase(unittest.TestCase):
         Returns:
 
         """
-        reading = OWLEnergyReading(channel=1)
-        reading.process_xml(self.test_data)
+        reading = OWLEnergyReading.from_string(self.test_data, channel=1)
         self.assertEqual(reading.channel, 1)
         self.assertEqual(reading.owl_id, '4437190077C6')
         self.assertEqual(reading.current, 0.0)
@@ -121,24 +119,11 @@ class OWLEnergyReadingTestCase(unittest.TestCase):
         Returns:
 
         """
-        reading = OWLEnergyReading()
-        reading.process_xml(None)
+        reading = OWLEnergyReading.from_string(None)
         self.assertEqual(reading.channel, 0)
         self.assertEqual(reading.owl_id, None)
         self.assertEqual(reading.current, None)
         self.assertEqual(reading.total_current, None)
-
-    def test_process_xml_auto(self):
-        """
-
-        Returns:
-
-        """
-        reading = OWLEnergyReading(xml_string=self.test_data)
-        self.assertEqual(reading.channel, 0)
-        self.assertEqual(reading.owl_id, '4437190077C6')
-        self.assertEqual(reading.current, 2431.00)
-        self.assertEqual(reading.total_current, 5307.82)
 
     def test_process_xml_no_match(self):
         """
@@ -146,8 +131,7 @@ class OWLEnergyReadingTestCase(unittest.TestCase):
         Returns:
 
         """
-        reading = OWLEnergyReading()
-        reading.process_xml("This will not match")
+        reading = OWLEnergyReading.from_string("This will not match")
         self.assertEqual(reading.channel, 0)
         self.assertEqual(reading.owl_id, None)
         self.assertEqual(reading.current, None)

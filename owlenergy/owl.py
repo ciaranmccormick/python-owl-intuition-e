@@ -53,46 +53,45 @@ class OWLDevice(object):
 
 
 class OWLEnergyReading(object):
-    def __init__(self, channel=0, owl_id=None, current=None, total_current=None,
-                 xml_string=None):
-        """
+    def __init__(self, channel=0, owl_id=None, current=None,
+                 total_current=None):
+        """Object for holding OWL energy readings.
 
         Args:
             channel (int):
             owl_id (str):
             current (float):
             total_current (float):
-            xml_string (str):
         """
         self.current = current
         self.total_current = total_current
         self.channel = channel
         self.owl_id = owl_id
 
-        if xml_string is not None:
-            self.process_xml(xml_string)
-
-    def process_xml(self, raw_data):
+    @classmethod
+    def from_string(cls, xml_string, channel=0):
         """Extracts data from the OWL data buffer that matches the pattern.
 
         """
         pattern = (r"<electricity id='(.*)'><timestamp>.*chan id='({})'>"
                    r"<curr units='w'>([0-9]+\.[0-9]+)</curr>"
                    r"<day units='wh'>([0-9]+\.[0-9]+)"
-                   r"</day.*").format(self.channel)
+                   r"</day.*").format(channel)
 
         try:
-            result = re.match(pattern, raw_data)
+            result = re.match(pattern, xml_string)
 
             if result is not None:
-                self.owl_id = result.group(1)
-                self.channel = int(result.group(2))
-                self.current = float(result.group(3))
-                logger.debug("current: %f", self.current)
-                self.total_current = float(result.group(4))
-                logger.debug("total current: %f", self.total_current)
+                owl_id = result.group(1)
+                channel = int(result.group(2))
+                current = float(result.group(3))
+                total_current = float(result.group(4))
+                return cls(channel=channel, owl_id=owl_id, current=current,
+                           total_current=total_current)
             else:
-                logger.warning("No data available on channel %s", self.channel)
+                logger.warning("No data available on channel %s", channel)
+                return OWLEnergyReading(channel=channel)
 
         except TypeError as error:
             logger.error(error)
+            return OWLEnergyReading(channel=channel)
