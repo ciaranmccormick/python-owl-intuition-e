@@ -35,8 +35,7 @@ class OWLDeviceTestCase(unittest.TestCase):
         Returns:
             None
         """
-        device = OWLDevice()
-        device.process_xml(self.test_data)
+        device = OWLDevice.from_string(self.test_data)
         self.assertEqual(device.last_update, 1520612469)
         self.assertEqual(device.signal_strength, -65.0)
         self.assertEqual(device.link_quality, 98.0)
@@ -48,8 +47,7 @@ class OWLDeviceTestCase(unittest.TestCase):
         Returns:
             None
         """
-        device = OWLDevice()
-        device.process_xml(None)
+        device = OWLDevice.from_string(None)
         self.assertEqual(device.last_update, None)
         self.assertEqual(device.signal_strength, None)
         self.assertEqual(device.link_quality, None)
@@ -61,24 +59,11 @@ class OWLDeviceTestCase(unittest.TestCase):
         Returns:
             None
         """
-        device = OWLDevice()
-        device.process_xml("this text will not match.")
+        device = OWLDevice.from_string("this text will not match.")
         self.assertEqual(device.last_update, None)
         self.assertEqual(device.signal_strength, None)
         self.assertEqual(device.link_quality, None)
         self.assertEqual(device.battery_level, None)
-
-    def test_process_xml_auto(self):
-        """Test for when xml is passed when device is created.
-
-        Returns:
-            None
-        """
-        device = OWLDevice(xml_string=self.test_data)
-        self.assertEqual(device.last_update, 1520612469)
-        self.assertEqual(device.signal_strength, -65.0)
-        self.assertEqual(device.link_quality, 98.0)
-        self.assertEqual(device.battery_level, 100.0)
 
 
 class OWLEnergyReadingTestCase(unittest.TestCase):
