@@ -32,7 +32,7 @@ device.__dict__
 {'battery_level': 100.0,
  'last_update': 1520612469,
  'link_quality': 98.0,
- 'owl_id': '4437190077C6',
+ 'owl_id': '4437191177C6',
  'signal_strength': -65.0}
 
 energy_reading.__dict__
