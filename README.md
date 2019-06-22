@@ -15,7 +15,7 @@ from owlenergy.owl import OWLDevice, OWLEnergyReading
 
 client = OWLClient(host='localhost', port=22600, msg_buffer_size=512,
                    multi_cast_address='224.192.32.19')
-client.initialize_socket()
+client.initialise_socket()
 reading = client.get_reading()
 
 if reading is not None:
